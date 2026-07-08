@@ -7,7 +7,7 @@ const ai = new GoogleGenAI({
 
 export async function askGemini(userInputToken: string) {
     const stream = await ai.models.generateContentStream({
-        model: "gemini-3.5-flash",
+        model: "gemini-2.5-flash",
         contents: userInputToken,
         config: {
             systemInstruction: systemPrompts,
