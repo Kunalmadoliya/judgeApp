@@ -1,15 +1,16 @@
 import Cerebras from '@cerebras/cerebras_cloud_sdk';
+import  {systemPrompts}  from '../systemPrompt';
 
 const client = new Cerebras({
     apiKey: process.env.CEREBRAS_API_KEY
 });
 
-export async function askCerebras(userInputToken: string) {
+export async function askCerebras(userInputToken: string ) {
     const stream = await client.chat.completions.create({
         messages: [
             {
                 role: "system",
-                content: "Always respond in the same language as the user's message.",
+                content: systemPrompts,
             },
             {
                 role: "user",

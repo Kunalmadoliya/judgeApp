@@ -1,4 +1,5 @@
 import Groq from "groq-sdk";
+import { systemPrompts } from '../systemPrompt';
 
 const groq = new Groq({
     apiKey: process.env.GROQ_API_KEY
@@ -13,7 +14,7 @@ export async function askGroq(prompt: string) {
 
             {
                 role: "system",
-                content: "You are a helpful assistant.",
+                content: systemPrompts,
             },
             {
                 role: "user",
@@ -21,11 +22,10 @@ export async function askGroq(prompt: string) {
             },
         ],
 
-        model: "openai/gpt-oss-20b",
-        temperature: 0.5,
+        model: "llama-3.3-70b-versatile",
+
         max_completion_tokens: 1024,
-        top_p: 1,
-        stop: null,
+
 
         // If set, partial message deltas will be sent.
         stream: true,

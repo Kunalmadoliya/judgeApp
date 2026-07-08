@@ -1,29 +1,25 @@
 import { GoogleGenAI } from "@google/genai";
+import { systemPrompts } from "../systemPrompt";
 
 const ai = new GoogleGenAI({
-    apiKey: process.env.GEMINI_API_KEY,
+    apiKey: process.env.GEMINI_API_KEY!,
 });
 
-
 export async function askGemini(userInputToken: string) {
-    const stream = await ai.interactions.create({
+    const stream = await ai.models.generateContentStream({
         model: "gemini-3.5-flash",
-        input: userInputToken,
-        stream: true,
-         generation_config: {
-            max_output_tokens : 1024
+        contents: userInputToken,
+        config: {
+            systemInstruction: systemPrompts,
+            maxOutputTokens: 1024,
         },
     });
 
-    let message = ""
-    for await (const event of stream) {
-        if (event.event_type === "step.delta") {
-            if (event.delta.type === "text") {
-                message += event.delta.text
-            }
-        }
+    let message = "";
+
+    for await (const chunk of stream) {
+        message += chunk.text ?? "";
     }
 
-
-    return message
-}   
+    return message;
+}
