@@ -24,7 +24,7 @@ export async function askCerebras(userInputToken: string ) {
 
     let message = ""
     for await (const chunk of stream) {
-        message += chunk.choices[0]?.delta?.content || ''
+        message += (chunk as any).choices[0]?.delta?.content || ''
     }
 
     return message
